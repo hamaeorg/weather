@@ -10,8 +10,8 @@ RUN apt-get install openjdk-17-jdk -y
 
 RUN apt-get clean
 
-EXPOSE 8080
+ADD /weather /home/weatherapi
 
-COPY /weather/build/libs/weather-0.0.1.jar weather-0.0.1.jar
+RUN /home/weatherapi/gradlew build -p /home/weatherapi
 
-CMD java -jar weather-0.0.1.jar
+CMD java -jar /home/weatherapi/build/libs/weather-0.0.1.jar

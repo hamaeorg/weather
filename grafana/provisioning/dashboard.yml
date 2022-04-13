@@ -1,7 +1,8 @@
 
-# grafana/provisioning/dashboards/dashboard.yml
 apiVersion: 1
  
 providers:
   - name: 'Tallinn-weather'
     folder: 'Services'
+    options:
+      path: /etc/grafana/provisioning/dashboards

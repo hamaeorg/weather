@@ -27,4 +27,4 @@ up:
 	docker-compose up
 
 .PHONY : all
-all : java-build docker-build up
+all : docker-build up

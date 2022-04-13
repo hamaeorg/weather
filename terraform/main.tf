@@ -24,31 +24,61 @@ resource "azurerm_resource_group" "rg" {
 
 }
 
-resource "azurerm_kubernetes_cluster" "akc" {
-  name                = "aks-westeu-01"
+resource "azurerm_virtual_network" "avn" {
+  name                = "v-network-westeu-01"
+  address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  dns_prefix          = "aks-westeu-01-dns"
-  sku_tier            = "Free"
-  tags = {
-    source = "Terraform"
-  }
+}
 
-  default_node_pool {
-    name                = "agentpool"
-    vm_size             = "Standard_B2s"
-    node_count           = 2
-  }
+resource "azurerm_subnet" "as" {
+  name                 = "subnet-westeu-01"
+  resource_group_name  = azurerm_resource_group.rg.name
+  virtual_network_name = azurerm_virtual_network.avn.name
+  address_prefixes     = ["10.0.2.0/24"]
+}
 
-  identity {
-    type         = "SystemAssigned"
-  }
+resource "azurerm_network_interface" "nic" {
+  name                = "n-interface-westeu-01"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
 
-#   network_profile {
-#     network_plugin     = "azure"
-#     dns_service_ip     = "10.0.0.10"
-#     docker_bridge_cidr = "172.17.0.1/16"
-#     service_cidr       = "10.0.0.0/16"
-#     load_balancer_sku  = "Standard"
-#   }
+  ip_configuration {
+    name                          = "internal"
+    subnet_id                     = azurerm_subnet.as.id
+    private_ip_address_allocation = "Dynamic"
+  }
+}
+
+
+resource "azurerm_virtual_machine" "main" {
+  name                  = "ubuntu-vm"
+  location              = azurerm_resource_group.rg.location
+  resource_group_name   = azurerm_resource_group.rg.name
+  network_interface_ids = [azurerm_network_interface.nic.id]
+  vm_size               = "Standard_B2s"
+
+  storage_image_reference {
+    publisher = "Canonical"
+    offer     = "0001-com-ubuntu-server-focal-daily"
+    sku       = "20_04-daily-lts"
+    version   = "latest"
+  }
+  storage_os_disk {
+    name              = "myosdisk1"
+    caching           = "ReadWrite"
+    create_option     = "FromImage"
+    managed_disk_type = "Standard_LRS"
+  }
+  os_profile {
+    computer_name  = "hostname"
+    admin_username = "admin1234"
+    admin_password = "Password1234!"
+  }
+  os_profile_linux_config {
+    disable_password_authentication = false
+  }
+    tags = {
+        source = "Terraform"
+    }
 }

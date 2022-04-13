@@ -16,7 +16,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "rg" {
-    name = "rg-aks-westeu-01"
+    name = "rg-VM-westeu-01"
     location = "westeurope"
     tags = {
         source = "Terraform"
@@ -77,6 +77,10 @@ resource "azurerm_virtual_machine" "main" {
   }
   os_profile_linux_config {
     disable_password_authentication = false
+    ssh_keys {
+      path = "/home/admin1234/.ssh/authorized_keys"
+      key_data = file("~/.ssh/mykeys/id_rsa.pub")
+    }
   }
     tags = {
         source = "Terraform"

@@ -14,13 +14,13 @@ docker-build:
 
 .PHONY: docker-clean
 docker-clean:
-	docker stop weather-service-img prometheus-img grafana-img
-	docker rmi weather-service-img prometheus-img grafana-img
+	docker stop weather-service prometheus grafana
+	docker rm weather-service prometheus grafana
 
 
 .PHONY: docker-delete
 docker-delete:
-	docker rmi  weather-service-img prometheus-img grafana-img
+	docker rmi  weather-service-img prometheus-img grafana-img -f
 
 .PHONY: up
 up:

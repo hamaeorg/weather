@@ -1,0 +1,19 @@
+# sport_app docker-compose.yml
+version: '3'
+services:
+  weather-service:
+    image: "weather-service-img"
+    container_name: "weather-service"
+    ports:
+      - "8080:8080"
+  prometheus:
+    image: "prometheus-img"
+    container_name: "prometheus"
+    ports:
+      - "9090:9090"
+  grafana:
+    image: "grafana/grafana-enterprise"
+    container_name: "grafana"
+    ports:
+      - "7070:3000"
+

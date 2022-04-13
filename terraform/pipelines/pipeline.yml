@@ -5,17 +5,3 @@ variables:
   value: "ubuntu-latest"
 trigger:
 - master
-
-stages:
-- stage: Plan
-  dependsOn: []
-  jobs:
-  - job: Plan_terraform
-    timeoutInMinutes: 10
-    pool:
-      vmimage: $(pool)
-    steps:
-    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
-      displayName: install terraform
-      inputs:
-        terraformVersion: latest

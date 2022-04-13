@@ -12,6 +12,8 @@ RUN apt-get clean
 
 ADD /weather /home/weatherapi
 
+RUN chmod -R 755 /home/weatherapi
+
 RUN /home/weatherapi/gradlew build -p /home/weatherapi
 
 CMD java -jar /home/weatherapi/build/libs/weather-0.0.1.jar

@@ -12,6 +12,8 @@ RUN apt-get clean
 
 ADD /weather /home/weatherapi
 
+RUN sed -i -e 's/\r$//' /home/weatherapi/gradlew
+
 RUN chmod -R 755 /home/weatherapi
 
 RUN /home/weatherapi/gradlew build -p /home/weatherapi

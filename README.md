@@ -3,7 +3,7 @@
 ## To run locally 
 
 ### Soft
-docker<br/>
+dockerc
 gnu make<br/>
 OpenSSL.Light
 
@@ -22,6 +22,6 @@ user: user<br/>
 password:password<br/>
 
 ## TODO
-*Fix terraform
-*add a srcript to install relevant software and spin up all three applications in VM
-*Run the script via terraform
+*Fix terraform<br/>
+*add a srcript to install relevant software and spin up all three applications in VM<br/>
+*Run the script via terraform<br/>
